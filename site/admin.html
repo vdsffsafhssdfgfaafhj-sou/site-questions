@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Админ-панель — Управление</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {--bg-body:#e9e4d9;--bg-site:#fdf8ed;--ink:#1a2a22;--muted:#687868;--line:#e0dcd0;--accent-green:#1e5c42;--accent-orange:#e57a44;--card-bg:#ffffff;--font-serif:'Cormorant Garamond',serif;--font-sans:'Inter',sans-serif;--shadow:0 10px 30px rgba(30,92,66,0.08)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg-body);color:var(--ink);font-family:var(--font-sans);line-height:1.5}
+button,input,textarea{font:inherit}button{cursor:pointer}
+.site{max-width:1200px;margin:18px auto;background:var(--bg-site);border:1px solid #fff;border-radius:24px;overflow:hidden;box-shadow:0 18px 60px rgba(30,92,66,0.1)}
+header{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:20px 34px;background:rgba(253,248,237,0.9);border-bottom:1px solid var(--line)}
+.logo{font-family:var(--font-serif);font-size:30px;font-weight:600;color:var(--accent-green)}
+nav{display:flex;gap:15px;align-items:center}
+nav button{background:none;border:0;color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:1px;font-weight:600;padding:8px 0;transition:0.3s}
+nav button:hover{color:var(--accent-orange)}
+nav button.active{color:var(--accent-green);border-bottom:2px solid var(--accent-green)}
+.btn{border:1px solid var(--line);border-radius:30px;background:transparent;color:var(--ink);padding:12px 24px;font-size:12px;text-transform:uppercase;letter-spacing:1px;font-weight:600;transition:.3s}
+.btn:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--accent-green)}
+.btn.dark{background:var(--accent-green);color:white;border-color:var(--accent-green)}
+.btn.danger{color:var(--accent-orange);border-color:var(--accent-orange)}
+.btn.mini{padding:8px 14px;font-size:11px;border-radius:20px}
+main{padding:8px 34px 40px}
+.section-head{margin:24px 0}
+.section-head h2{font-family:var(--font-serif);font-size:38px;font-weight:500;color:var(--accent-green)}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:15px 0 24px}
+.toolbar h3{font-size:20px;font-weight:600;color:var(--ink)}
+.stats{display:flex;gap:15px;margin-bottom:24px}
+.stat{padding:20px;border-radius:20px;background:var(--card-bg);border:1px solid var(--line);min-width:140px;box-shadow:0 4px 15px rgba(0,0,0,0.02)}
+.stat strong{font-family:var(--font-serif);display:block;font-size:32px;font-weight:600;color:var(--accent-orange)}
+.stat span{font-size:12px;color:var(--muted);font-weight:500}
+.table-wrap{overflow:auto;background:var(--card-bg);border:1px solid var(--line);border-radius:20px;box-shadow:0 4px 15px rgba(0,0,0,0.02)}
+table{border-collapse:collapse;width:100%;min-width:680px;font-size:13px}
+th,td{text-align:left;vertical-align:top;padding:16px;border-bottom:1px solid var(--line);white-space:pre-wrap;overflow-wrap:anywhere;max-width:300px}
+th{background:#f7f5f0;color:var(--muted);text-transform:uppercase;font-size:11px;letter-spacing:0.5px}
+tr:last-child td{border-bottom:0}
+.admin-list{display:grid;gap:12px}
+.admin-item{display:flex;align-items:center;justify-content:space-between;gap:15px;background:var(--card-bg);border:1px solid var(--line);border-radius:20px;padding:16px 20px;box-shadow:0 4px 15px rgba(0,0,0,0.02);transition:0.3s}
+.admin-item:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.admin-item p{margin:0;font-size:15px;font-weight:500;display:flex;align-items:center;gap:15px}
+.admin-actions{display:flex;gap:8px}
+.empty{background:var(--card-bg);border:1px dashed var(--accent-green);border-radius:20px;padding:40px;text-align:center;color:var(--muted);font-size:14px}
+footer{border-top:1px solid var(--line);padding:24px 34px;color:var(--muted);font-size:12px;background:var(--card-bg);text-align:center}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(26,42,34,0.6);z-index:5;place-items:center;padding:18px;backdrop-filter:blur(5px)}
+.modal-bg.show{display:grid}
+.modal{width:min(520px,100%);background:var(--bg-site);border-radius:24px;padding:34px;box-shadow:0 20px 70px rgba(0,0,0,0.3)}
+.modal h3{font-family:var(--font-serif);font-size:28px;font-weight:500;margin:0 0 20px;color:var(--accent-green)}
+.modal textarea{width:100%;border:2px solid #e2ece6;background:#fff;border-radius:14px;padding:15px;min-height:120px;font-size:15px;outline:none;transition:0.3s;resize:vertical;font-family:var(--font-sans)}
+.modal textarea:focus{border-color:var(--accent-green)}
+.modal-actions{display:flex;justify-content:flex-end;gap:12px;margin-top:24px}
+.toast{display:none;position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent-green);color:#fff;padding:14px 28px;border-radius:30px;font-size:13px;z-index:8;box-shadow:0 10px 30px rgba(0,0,0,0.2)}
+.toast.show{display:block;animation:fadeIn 0.3s}
+@keyframes fadeIn{from{opacity:0;transform:translate(-50%,20px)}to{opacity:1;transform:translate(-50%,0)}}
+.login-box{max-width:420px;margin:100px auto;padding:40px;background:var(--card-bg);border-radius:24px;box-shadow:var(--shadow);border:1px solid var(--line)}
+.login-box h2{font-family:var(--font-serif);font-size:36px;font-weight:500;margin:0 0 24px;color:var(--accent-green);text-align:center}
+.login-box label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--accent-green);margin-bottom:8px;font-weight:600}
+.login-box input{width:100%;border:2px solid #e2ece6;border-radius:14px;padding:14px;margin-bottom:20px;font-size:15px;outline:none;transition:0.3s}
+.login-box input:focus{border-color:var(--accent-green)}
+.panel{display:none}.panel.active{display:block}
+@media(max-width:600px){.site{margin:0;border-radius:0}header{padding:20px;flex-direction:column;align-items:flex-start}main{padding:8px 20px 30px}.admin-item{flex-direction:column;align-items:flex-start}.modal{padding:24px}}
+</style>
+</head>
+<body>
+<div class="site">
+<header>
+  <div class="logo">EST Admin</div>
+  <nav id="navBar" style="display:none">
+    <button data-panel="responses" class="active">Ответы <span id="navCount">0</span></button>
+    <button data-panel="manage">Управление</button>
+    <button class="btn" id="logout" style="padding:8px 16px; font-size:11px;">Выйти</button>
+  </nav>
+</header>
+<div id="loginScreen" class="login-box">
+  <h2>Вход для заказчика</h2>
+  <label>Email</label>
+  <input type="email" id="adminEmail" placeholder="Email из Supabase" value="admin@site.ru">
+  <label>Пароль</label>
+  <input type="password" id="adminPassword" placeholder="Пароль">
+  <button class="btn dark" id="loginBtn" style="width:100%; padding:16px;">Войти</button>
+  <div class="status" id="loginStatus" style="color:var(--accent-orange);margin-top:15px;font-size:13px;text-align:center;font-weight:500;"></div>
+</div>
+<main id="adminContent" style="display:none">
+  <section id="responses" class="panel active">
+    <div class="section-head"><h2>Ответы клиентов</h2></div>
+    <div class="toolbar">
+      <h3>Последние анкеты</h3>
+      <div class="actions">
+        <button class="btn" id="exportCsv">Скачать CSV ↓</button>
+        <button class="btn danger" id="deleteAllResponses">Удалить все</button>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><strong id="totalResponses">0</strong><span>получено анкет</span></div>
+      <div class="stat"><strong id="totalQuestions">0</strong><span>активных вопросов</span></div>
+    </div>
+    <div id="responseTable" class="table-wrap"></div>
+  </section>
+  <section id="manage" class="panel">
+    <div class="section-head"><h2>Управление вопросами</h2></div>
+    <div class="toolbar">
+      <h3>Список вопросов</h3>
+      <button class="btn dark" id="addQuestion">＋ Добавить вопрос</button>
+    </div>
+    <div id="adminList" class="admin-list"></div>
+  </section>
+</main>
+<footer>EST Admin Panel &copy; 2026</footer>
+</div>
+<div class="modal-bg" id="questionModal">
+  <div class="modal">
+    <h3 id="modalTitle">Новый вопрос</h3>
+    <label style="font-size:11px;font-weight:600;color:var(--accent-green);display:block;margin-bottom:8px;text-transform:uppercase;">Текст вопроса</label>
+    <textarea id="questionText" maxlength="500" placeholder="Введите вопрос…"></textarea>
+    <div class="modal-actions">
+      <button class="btn" id="cancelQuestion">Отмена</button>
+      <button class="btn dark" id="saveQuestion">Сохранить</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+const SUPABASE_URL = 'https://keuilhkoqkkjdnnookfu.supabase.co'; 
+const SUPABASE_PUBLISHABLE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtldWlsaGtvcWtramRubm9va2Z1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzNTc1MzIsImV4cCI6MjEwODkzMzUzMn0.gMpeh137cySh1Es0zxJAsObSm6PNyzn2RU4r1QI9Q4A'; 
+
+// Проверяем, что локальная библиотека Supabase действительно загрузилась.
+if (!window.supabase || typeof window.supabase.createClient !== 'function') {
+  const status = document.getElementById('loginStatus');
+  if (status) {
+    status.textContent = 'Не удалось загрузить библиотеку Supabase. Обновите страницу и проверьте, что файл lib.js находится рядом с admin.html.';
+  }
+  throw new Error('Supabase library is not loaded: проверьте подключение ./lib.js');
+}
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const toast = msg => { const t = $('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); };
+
+let questions = [], responses = [], editingId = null;
+
+async function checkSession() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) showAdmin();
+  else { $('loginScreen').style.display = 'block'; $('adminContent').style.display = 'none'; }
+}
+
+$('loginBtn').onclick = async () => {
+  const email = $('adminEmail').value.trim();
+  const password = $('adminPassword').value;
+  $('loginBtn').innerText = 'Загрузка...';
+  $('loginStatus').innerText = 'Проверяем связь...';
+  
+  const { error } = await sb.auth.signInWithPassword({ email, password });
+  
+  if (error) { 
+    $('loginBtn').innerText = 'Войти';
+    $('loginStatus').style.color = 'red';
+    $('loginStatus').innerText = 'ОШИБКА: ' + error.message; 
+    return; 
+  }
+  $('loginStatus').innerText = '';
+  showAdmin();
+};
+
+$('logout').onclick = async () => { await sb.auth.signOut(); location.reload(); };
+
+function showAdmin() {
+  $('loginScreen').style.display = 'none';
+  $('adminContent').style.display = 'block';
+  $('navBar').style.display = 'flex';
+  loadData();
+}
+
+async function loadData() {
+  try {
+    const { data: qs, error: qError } = await sb.from('questions').select('*').order('created_at', { ascending: true });
+    if (qError) {
+      questions = [];
+      renderAll();
+      toast('Ошибка загрузки вопросов: ' + qError.message);
+      console.error('Supabase questions SELECT error:', qError);
+      return;
+    }
+    questions = qs || [];
+    const { data: rs, error: rError } = await sb.from('responses').select('*').order('created_at', { ascending: false });
+    if (rError) {
+      responses = [];
+      console.error('Supabase responses SELECT error:', rError);
+      toast('Вопросы загружены, но ответы не загрузились: ' + rError.message);
+    } else {
+      responses = rs || [];
+    }
+    renderAll();
+  } catch (e) {
+    console.error('Unexpected loadData error:', e);
+    toast('Ошибка загрузки: ' + (e.message || String(e)));
+  }
+}
+
+function renderAll() { renderResponses(); renderAdmin(); $('totalQuestions').textContent = questions.length; $('navCount').textContent = responses.length; }
+
+function renderResponses() {
+  $('totalResponses').textContent = responses.length;
+  if (!responses.length) { $('responseTable').innerHTML = '<div class="empty">Пока нет ответов от клиентов.</div>'; return; }
+  const ids = [...new Set(responses.flatMap(r => Object.keys(r.answers || {})))];
+  const names = {};
+  ids.forEach(id => { names[id] = questions.find(q => q.id === id)?.text || 'Удаленный вопрос'; });
+  $('responseTable').innerHTML = `<table><thead><tr><th>Дата</th><th>Имя</th><th>Контакт</th>${ids.map(id => `<th>${esc(names[id])}</th>`).join('')}</tr></thead><tbody>${responses.map(r => `<tr><td>${new Date(r.created_at).toLocaleString('ru-RU')}</td><td>${esc(r.name || '—')}</td><td>${esc(r.contact || '—')}</td>${ids.map(id => `<td>${esc(r.answers?.[id] || '—')}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+}
+
+function renderAdmin() {
+  $('adminList').innerHTML = questions.length ? questions.map((q, i) => `<div class="admin-item"><p><span style="font-family:var(--font-serif);font-size:22px;color:var(--accent-orange);font-weight:600;line-height:1;margin-right:10px;">${String(i+1).padStart(2,'0')}</span>${esc(q.text)}</p><div class="admin-actions"><button class="btn mini" data-edit="${esc(q.id)}">Изменить</button><button class="btn mini danger" data-delete="${esc(q.id)}">Удалить</button></div></div>`).join('') : '<div class="empty">Список пуст. Добавьте первый вопрос!</div>';
+  document.querySelectorAll('[data-edit]').forEach(b => b.onclick = () => openModal(b.dataset.edit));
+  document.querySelectorAll('[data-delete]').forEach(b => b.onclick = async () => {
+    const q = questions.find(x => x.id === b.dataset.delete);
+    if (q && confirm(`Удалить вопрос «${q.text}»?`)) {
+      await sb.from('questions').delete().eq('id', q.id);
+      toast('Вопрос удалён'); loadData();
+    }
+  });
+}
+
+const modal = $('questionModal');
+function openModal(id = null) { editingId = id; const q = questions.find(x => x.id === id); $('modalTitle').textContent = q ? 'Изменить вопрос' : 'Добавить вопрос'; $('questionText').value = q?.text || ''; modal.classList.add('show'); $('questionText').focus(); }
+function closeModal() { modal.classList.remove('show'); editingId = null; }
+$('addQuestion').onclick = () => openModal();
+$('cancelQuestion').onclick = closeModal;
+modal.onclick = e => { if (e.target === modal) closeModal(); };
+
+$('saveQuestion').onclick = async () => {
+  const text = $('questionText').value.trim();
+  if (!text) { toast('Введите текст'); return; }
+  const button = $('saveQuestion');
+  button.disabled = true;
+  button.textContent = 'Сохраняем…';
+  try {
+    let result;
+    if (editingId) {
+      result = await sb.from('questions').update({ text }).eq('id', editingId).select('*');
+    } else {
+      result = await sb.from('questions').insert({ text }).select('*');
+    }
+    if (result.error) {
+      console.error('Supabase save question error:', result.error);
+      toast('Не сохранено: ' + result.error.message);
+      return;
+    }
+    if (!result.data || result.data.length === 0) {
+      toast('База не подтвердила сохранение. Проверьте права доступа (RLS) и настройки таблицы questions.');
+      console.error('Supabase returned no saved row. Check INSERT/UPDATE policies and table schema.');
+      return;
+    }
+    await loadData();
+    if (questions.some(q => String(q.id) === String(result.data[0].id))) {
+      closeModal();
+      toast('Вопрос сохранён и добавлен в список');
+    } else {
+      toast('Запись создана, но список не обновился. Проверьте доступ SELECT к questions.');
+    }
+  } catch (e) {
+    console.error('Unexpected save question error:', e);
+    toast('Ошибка сохранения: ' + (e.message || String(e)));
+  } finally {
+    button.disabled = false;
+    button.textContent = 'Сохранить';
+  }
+};
+
+$('exportCsv').onclick = () => {
+  if (!responses.length) { toast('Нет ответов'); return; }
+  const ids = [...new Set(responses.flatMap(r => Object.keys(r.answers || {})))];
+  const names = {}; ids.forEach(id => { names[id] = questions.find(q => q.id === id)?.text || 'Вопрос удалён'; });
+  const rows = [['Дата', 'Имя', 'Контакт', ...ids.map(id => names[id])], ...responses.map(r => [new Date(r.created_at).toLocaleString('ru-RU'), r.name || '', r.contact || '', ...ids.map(id => r.answers?.[id] || '')])];
+  const csv = '\uFEFF' + rows.map(row => row.map(v => '"' + String(v ?? '').replace(/"/g, '""') + '"').join(';')).join('\r\n');
+  const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
+  const a = document.createElement('a'); a.href = url; a.download = 'est-otvety.csv'; a.click(); URL.revokeObjectURL(url);
+};
+
+$('deleteAllResponses').onclick = async () => {
+  if (!responses.length || !confirm('Удалить все ответы? Это необратимо.')) return;
+  const { error } = await sb.from('responses').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+  if (error) { toast('Ошибка удаления'); return; }
+  toast('Ответы удалены'); loadData();
+};
+
+document.querySelectorAll('[data-panel]').forEach(b => b.onclick = () => {
+  document.querySelectorAll('[data-panel]').forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+  document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.id === b.dataset.panel));
+});
+
+checkSession();
+</script>
+</body>
+</html>
