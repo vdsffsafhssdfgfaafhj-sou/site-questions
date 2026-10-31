@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PVI — пространство для ваших идей</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-body: #e9e4d9;
+  --bg-site: #fdf8ed;
+  --ink: #1a2a22;
+  --muted: #687868;
+  --line: #e0dcd0;
+  --accent-green: #1e5c42;
+  --accent-orange: #e57a44;
+  --card-bg: #ffffff;
+  --font-serif: 'Cormorant Garamond', serif;
+  --font-sans: 'Inter', sans-serif;
+  --shadow: 0 10px 30px rgba(30, 92, 66, 0.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg-body);color:var(--ink);font-family:var(--font-sans);line-height:1.5}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+.site{max-width:1200px;margin:18px auto;background:var(--bg-site);border:1px solid #fff;border-radius:24px;overflow:hidden;box-shadow:0 18px 60px rgba(30, 92, 66, 0.1)}
+header{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:20px 34px;background:rgba(253, 248, 237, 0.9);border-bottom:1px solid var(--line);position:relative;z-index:2}
+.logo{font-family:var(--font-serif);font-size:34px;letter-spacing:-1px;font-weight:600;line-height:1;color:var(--accent-green)}
+.logo small{display:inline-block;font-family:var(--font-sans);font-size:9px;line-height:1.2;letter-spacing:0;margin-left:10px;font-weight:500;color:var(--muted)}
+nav{display:flex;gap:22px;align-items:center}
+nav button{background:none;border:0;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:1px;font-weight:500;padding:8px 0;transition:0.3s}
+nav button:hover{color:var(--accent-orange)}
+.btn{border:1px solid var(--line);border-radius:30px;background:transparent;color:var(--ink);padding:12px 24px;font-size:12px;text-transform:uppercase;letter-spacing:1px;font-weight:500;transition:.3s}
+.btn:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--accent-green)}
+.btn.dark{background:var(--accent-green);color:white;border-color:var(--accent-green)}
+.btn.dark:hover{background:#154431}
+.hero{position:relative;min-height:420px;padding:70px 34px 50px;display:flex;align-items:center;overflow:hidden;background:var(--bg-site)}
+.hero-image{position:absolute;inset:0;background:linear-gradient(135deg, var(--bg-site) 0%, #e8f0eb 100%);z-index:0;}
+.hero-content{position:relative;z-index:1;max-width:510px}
+.eyebrow{text-transform:uppercase;letter-spacing:.15em;font-size:10px;color:var(--accent-orange);font-weight:600;margin-bottom:18px}
+.hero h1{font-family:var(--font-serif);font-size:clamp(46px,6vw,76px);line-height:0.95;letter-spacing:-.02em;font-weight:500;margin:0 0 22px;max-width:570px;color:var(--accent-green)}
+.hero p{color:var(--muted);max-width:380px;font-size:15px;margin:0 0 24px}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.features{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;padding:24px 28px 40px;background:transparent}
+.feature{background:var(--card-bg);border:1px solid var(--line);border-radius:20px;padding:24px 20px;min-height:145px;box-shadow:0 4px 15px rgba(0,0,0,0.02);transition:0.3s}
+.feature:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
+.feature-icon{width:38px;height:38px;border-radius:50%;background:var(--accent-green);color:#fff;display:grid;place-items:center;margin-bottom:14px;font-size:16px}
+.feature strong{display:block;font-size:14px;font-weight:600;line-height:1.3;margin-bottom:6px}
+.feature p{font-size:12px;color:var(--muted);margin:0}
+main{padding:8px 34px 40px}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:18px;margin:18px 0 24px}
+.section-head h2{font-family:var(--font-serif);font-size:38px;letter-spacing:-1px;font-weight:500;margin:0;color:var(--accent-green)}
+.section-head p{font-size:13px;color:var(--muted);margin:0}
+.questions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.q-card{border:1px solid var(--line);border-radius:20px;background:var(--card-bg);overflow:hidden;transition:.3s;box-shadow:0 4px 16px rgba(0,0,0,0.02)}
+.q-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.q-toggle{border:0;background:none;width:100%;padding:24px 20px;text-align:left;display:flex;align-items:flex-start;gap:14px;color:inherit;min-height:110px}
+.q-num{font-family:var(--font-serif);font-size:24px;color:var(--accent-orange);font-weight:600;line-height:1}
+.q-name{font-size:15px;line-height:1.35;font-weight:600;flex:1}
+.plus{font-size:22px;font-weight:300;color:var(--muted);transition:.3s}
+.q-card.open .plus{transform:rotate(45deg);color:var(--accent-green)}
+.q-body{display:none;padding:0 20px 24px}
+.q-card.open .q-body{display:block}
+.q-body label,.field label{display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--accent-green);margin-bottom:8px}
+textarea,input{width:100%;border:2px solid #e2ece6;background:#fafcfa;border-radius:14px;padding:14px;color:var(--ink);outline:none;font-size:14px;font-family:var(--font-sans);transition:0.3s}
+textarea{min-height:110px;resize:vertical}
+textarea:focus,input:focus{border-color:var(--accent-green);background:#fff}
+.form-bottom{margin-top:24px;padding:30px;border:1px solid var(--line);border-radius:20px;background:var(--card-bg)}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.field input{margin-top:8px}
+.form-bottom .actions{margin-top:24px;align-items:center}
+.hint{font-size:12px;color:var(--muted)}
+.status{font-size:14px;color:var(--accent-green);font-weight:600;margin-top:15px}
+.dark-band{margin-top:40px;background:var(--accent-green);color:#fff;border-radius:24px;display:grid;grid-template-columns:1.15fr 1fr;overflow:hidden;min-height:200px;box-shadow:0 15px 40px rgba(30, 92, 66, 0.2)}
+.dark-copy{padding:34px}
+.dark-copy h3{font-family:var(--font-serif);font-size:32px;line-height:1.1;letter-spacing:-0.5px;font-weight:500;margin:0 0 24px}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.metric strong{font-family:var(--font-serif);font-size:28px;font-weight:600;display:block;color:#fff}
+.metric span{font-size:11px;color:#a3c2b1}
+.dark-image{min-height:200px;background:url('https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1000&q=80') center/cover}
+footer{border-top:1px solid var(--line);padding:24px 34px;display:flex;justify-content:space-between;gap:12px;align-items:center;color:var(--muted);font-size:11px;background:var(--card-bg)}
+footer .logo{font-size:24px}
+.toast{display:none;position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent-green);color:#fff;padding:14px 28px;border-radius:30px;font-size:13px;z-index:8;box-shadow:0 10px 30px rgba(0,0,0,0.2)}
+.toast.show{display:block;animation:fadeIn 0.3s}
+@keyframes fadeIn{from{opacity:0;transform:translate(-50%,20px)}to{opacity:1;transform:translate(-50%,0)}}
+@media(max-width:850px){nav{gap:10px}.hero-image{left:20%;opacity:.7}.questions{grid-template-columns:repeat(2,minmax(0,1fr))}.features{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.site{margin:0;border-radius:0;border:0}header{padding:18px;align-items:flex-start;flex-direction:column}nav{width:100%;justify-content:space-between}.hero{padding:48px 22px 38px;min-height:440px;align-items:flex-start}.hero-image{inset:0}.hero h1{font-size:50px}.features{padding:12px;gap:10px}.feature{padding:16px;min-height:130px}main{padding:8px 16px 25px}.section-head h2{font-size:32px}.questions{grid-template-columns:1fr}.q-toggle{min-height:85px;padding:18px}.q-body{padding:0 18px 18px}.fields{grid-template-columns:1fr}.dark-band{grid-template-columns:1fr}.dark-image{min-height:160px;grid-row:1}.dark-copy{padding:24px}footer{padding:20px;flex-direction:column;align-items:flex-start}}
+</style>
+</head>
+<body>
+<div class="site">
+<header>
+  <div class="logo">PVI <small>пространство<br>для ваших идей</small></div>
+  <nav><button class="btn dark" id="navStart">Оставить ответ ↗</button></nav>
+</header>
+<section class="hero">
+  <div class="hero-image"></div>
+  <div class="hero-content">
+    <div class="eyebrow">Ваш голос важен</div>
+    <h1>Пространство<br>для ваших идей</h1>
+    <p>Поделитесь мнением, расскажите о своих впечатлениях и предложениях. Каждый ответ помогает нам становиться лучше.</p>
+    <div class="actions"><button class="btn dark" id="heroStart">Заполнить анкету ↗</button><button class="btn" id="heroAbout">Как это работает</button></div>
+  </div>
+</section>
+<section class="features">
+  <article class="feature"><div class="feature-icon">✳</div><strong>Ваше мнение важно</strong><p>Каждый ответ помогает увидеть больше.</p></article>
+  <article class="feature"><div class="feature-icon">⌘</div><strong>Удобный формат</strong><p>Отвечайте в удобном для вас темпе.</p></article>
+  <article class="feature"><div class="feature-icon">◷</div><strong>Всего несколько минут</strong><p>Короткие вопросы без лишнего.</p></article>
+  <article class="feature"><div class="feature-icon">♡</div><strong>Всё в одном месте</strong><p>Ответы собираются в общую таблицу.</p></article>
+</section>
+<main>
+  <section id="survey">
+    <div class="section-head"><div><div class="eyebrow">Анкета</div><h2>Расскажите нам</h2></div><p id="questionCount">Загрузка…</p></div>
+    <div id="questionGrid" class="questions"><div style="grid-column: 1/-1; text-align: center; color: var(--muted); padding: 20px;">Загрузка вопросов...</div></div>
+    <div class="form-bottom">
+      <div class="fields">
+        <div class="field"><label>ВАШЕ ИМЯ · НЕОБЯЗАТЕЛЬНО</label><input id="respondentName" maxlength="120" placeholder="Как к вам обращаться?"></div>
+        <div class="field"><label>КОНТАКТ · НЕОБЯЗАТЕЛЬНО</label><input id="respondentContact" maxlength="160" placeholder="Email или телефон"></div>
+      </div>
+      <div class="actions">
+        <button class="btn dark" id="submitSurvey" style="background:var(--accent-orange); border-color:var(--accent-orange);">Отправить ответы ↗</button>
+        <button class="btn" id="clearAnswers">Очистить</button>
+        <span class="hint">Можно пропустить вопросы, на которые не хочется отвечать.</span>
+      </div>
+      <div class="status" id="surveyStatus"></div>
+    </div>
+  </section>
+  <section class="dark-band" id="about">
+    <div class="dark-copy"><div class="eyebrow" style="color:#a3c2b1">Просто и удобно</div><h3>Каждый ответ —<br>шаг к лучшему решению</h3><div class="metrics"><div class="metric"><strong>∞</strong><span>ответов участников</span></div><div class="metric"><strong>1</strong><span>общая таблица</span></div><div class="metric"><strong>✳</strong><span>ваше мнение</span></div></div></div>
+    <div class="dark-image"></div>
+  </section>
+</main>
+<footer><div class="logo">PVI <small>пространство<br>для ваших идей</small></div><span>Анкета обратной связи</span></footer>
+</div>
+<div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+const SUPABASE_URL = 'https://keuilhkoqkkjdnnookfu.supabase.co'; 
+// ВСТАВЬТЕ ВАШ КЛЮЧ EYJ... НИЖЕ
+const SUPABASE_PUBLISHABLE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtldWlsaGtvcWtramRubm9va2Z1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzNTc1MzIsImV4cCI6MjEwODkzMzUzMn0.gMpeh137cySh1Es0zxJAsObSm6PNyzn2RU4r1QI9Q4A'; 
+
+if (!window.supabase || typeof window.supabase.createClient !== 'function') {
+  document.getElementById('questionGrid').innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#b42318;padding:20px;">Не загрузилась библиотека Supabase. Проверьте, что файл lib.js находится рядом с index.html.</div>';
+  document.getElementById('questionCount').textContent = 'Ошибка загрузки';
+  throw new Error('Supabase library is not loaded');
+}
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const toast = msg => { const t = $('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); };
+const plural = n => { let x = n % 10, y = n % 100; return y >= 11 && y <= 14 ? 'вопросов' : x === 1 ? 'вопрос' : x >= 2 && x <= 4 ? 'вопроса' : 'вопросов'; };
+
+let questions = [];
+
+async function loadQuestions() {
+  const grid = $('questionGrid');
+  const count = $('questionCount');
+  grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:20px;">Загружаем вопросы…</div>';
+  count.textContent = 'Загрузка…';
+
+  try {
+    if (!window.supabase || typeof window.supabase.createClient !== 'function') {
+      throw new Error('Не загрузилась библиотека Supabase. Проверьте подключение к интернету и файл lib.js.');
+    }
+    const { data, error } = await sb
+      .from('questions')
+      .select('id, text, created_at')
+      .order('created_at', { ascending: true });
+
+    if (error) throw error;
+    questions = Array.isArray(data) ? data : [];
+    renderQuestions();
+  } catch (error) {
+    console.error('Ошибка загрузки вопросов из Supabase:', error);
+    grid.innerHTML = `<div class="hint" style="grid-column:1/-1;text-align:center;color:#b42318;padding:20px;">Не удалось загрузить вопросы: ${esc(error.message || 'Неизвестная ошибка')}. Обратитесь к администратору.</div>`;
+    count.textContent = 'Ошибка загрузки';
+  }
+}
+
+function renderQuestions() {
+  $('questionGrid').innerHTML = questions.length ? questions.map((q, i) => `
+    <article class="q-card">
+      <button class="q-toggle" type="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open')">
+        <span class="q-num">${String(i+1).padStart(2,'0')}</span>
+        <span class="q-name">${esc(q.text)}</span>
+        <span class="plus">＋</span>
+      </button>
+      <div class="q-body">
+        <label>ВАШ ОТВЕТ</label>
+        <textarea data-answer-id="${esc(q.id)}" maxlength="5000" placeholder="Напишите здесь…"></textarea>
+      </div>
+    </article>
+  `).join('') : '<div style="grid-column:1/-1; text-align:center; color:var(--muted);">Вопросов пока нет.</div>';
+  $('questionCount').textContent = `${questions.length} ${plural(questions.length)}`;
+}
+
+$('navStart').onclick = $('heroStart').onclick = () => $('questionGrid').scrollIntoView({ behavior: 'smooth' });
+$('heroAbout').onclick = () => $('about').scrollIntoView({ behavior: 'smooth' });
+
+$('submitSurvey').onclick = async () => {
+  if (!questions.length) { toast('Вопросов пока нет'); return; }
+  const answers = {};
+  questions.forEach(q => { answers[q.id] = document.querySelector(`[data-answer-id="${CSS.escape(q.id)}"]`)?.value.trim() || ''; });
+  if (!Object.values(answers).some(Boolean) && !confirm('Все ответы пустые. Всё равно отправить?')) return;
+  const name = $('respondentName').value.trim();
+  const contact = $('respondentContact').value.trim();
+  const { error } = await sb.from('responses').insert({ name, contact, answers });
+  if (error) { $('surveyStatus').style.color = 'red'; $('surveyStatus').textContent = 'Ошибка отправки: ' + error.message; return; }
+  document.querySelectorAll('[data-answer-id]').forEach(x => x.value = '');
+  $('respondentName').value = ''; $('respondentContact').value = '';
+  $('surveyStatus').style.color = 'var(--accent-green)';
+  $('surveyStatus').textContent = 'Спасибо! Ваши ответы отправлены.';
+  toast('Ответы успешно сохранены');
+};
+
+$('clearAnswers').onclick = () => {
+  if (!confirm('Очистить все введённые данные?')) return;
+  document.querySelectorAll('[data-answer-id]').forEach(x => x.value = '');
+  $('respondentName').value = ''; $('respondentContact').value = '';
+  $('surveyStatus').textContent = '';
+};
+
+loadQuestions();
+</script>
+</body>
+</html>
